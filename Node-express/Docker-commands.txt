@@ -1,0 +1,51 @@
+-------------------- To Create and Image---------------------------------------------------------------------------------------------------------- 
+$-> docker build -<tag> <name-of-the-Image> .
+ex=> docker build -t express-docker-image . 
+
+---------------------To check the Image List---------------------------------------------------------------------------------------------------------------------------
+$-> docker image ls
+
+---------------------Create/run Container from build Image--------------------------------------------------------------------------------------------------------------------
+$-> docker run --rm -d -p 5500:5500 --name express-docker-container express-docker-image
+
+-- rm => this flag is there to tell the Docker Daemon to clean up the container and remove the file system after the container exits
+-d => run the container in detach mode i.e container will run in the background
+-it => run the container in iteractive mode the commands curser will not be free
+-p => PORT expose Host/local-Machine PORT: container PORT 
+--name => name the container
+
+--------------------To check the container list--------------------------------------------------------------------------------------------------------------------------------
+$-> docker ps
+
+---------------------To Stop the Docker container------------------------------------------------------------------------------------------------------------------------------
+$-> docker stop <id-of-the-container> you can put few character of id it will recognise
+ex => docker stop 8dc55
+
+----------------------Volume binding in the Docker------------------------------------------------------------------------------------------------------------------------------------ 
+It mean that whatever the changes we do in the src code we need to get the output immedaitely so we will bind the src from local machine to docker container
+$-> docker run --rm -d -p 5500:5500 -v <pathToFolderOnLocalMachine:pathToFolderOnContainer> --name express-docker-container express-docker-image
+
+
+Ex for Windows(CMD) => docker run --rm -d -p 5500:5500 -v  D:\CODING\MyGitHUB\Docker-Examples\Node-express\:/app --name express-docker-container express-docker-image
+									or
+		       docker run --rm -d -p 5500:5500 -v  %cd%:/app --name express-docker-container express-docker-image
+Ex for Windows(powerShell) => docker run --rm -d -p 5500:5500 -v  ${pwd}:/app --name express-docker-container express-docker-image
+
+Ex for Linux => docker run --rm -d -p 5500:5500 -v  $(PWD):/app --name express-docker-container express-docker-image
+use $() => for Linux/mac
+----------------------------------To Pass Env Variable from the Containers -----------------------------------------------------------------------------------------------------------
+$-> docker run --rm -d -p 5500:5600 -v  ${pwd}:/app -e PORT="5600" --name express-docker-container express-docker-image
+To pass multiple Env variable we can use
+$-> docker run --rm -d -p 5500:5600 -v  ${pwd}:/app -e PORT="5600" -e MONGO="" --name express-docker-container express-docker-image
+
+But it become un-manageable
+$-> docker run --rm -d -p 5500:5600 -v  ${pwd}:/app --env-file ./.env --name express-docker-container express-docker-image
+.env whatever ENV variable it will copy but at runtime 
+----------------------------------Go into the Docker Container shell---------------------------------------------------------------------
+when container is running in detach we can go the docker shell 
+$-> docker exec -it <container-id> bash 
+ex=> docker exec -it 8764d bash
+
+-----------------------------------To check the logs for the Docker containers ---------------------------------------------------------
+$-> docker logs <container-id>
+ex=> docker logs 8764d
