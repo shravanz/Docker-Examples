@@ -1,0 +1,54 @@
+---------------- To pull an Image from Docker hub--------------------------------------------
+$-> docker pull <Image name>
+
+----------------- To create a mongo container we are going to write this commands------------
+$-> docker run -d --rm --name mongo-container \    *(Note- \ mean we can extend our cmd line to next line)
+    -e MONGO_INITDB_ROOT_USERNAME='root' \		*(FOR WINDOWS USE back tick(`) instead of (\))
+	-e MONGO_INITDB_ROOT_PASSWORD='secret' \
+	mongo *( here mongo is the offcial image from the docker hub)
+
+-----------------After running the container we can go to docker-container shell---------------
+$-> docker exec -it <container-name> bash
+ex=> docker exec -it mongo-container bash
+
+----------------After Entering into the mongo-docker-container with shell----------------
+$-> mongosh (it will open mongo shell commands)
+
+$-> mongosh -u <username> -p <password>
+ex=> mongosh -u root -p secret
+
+---------------MONGODB commands---------------------
+1. show dbs -- (use DBs)
+2. use admin -- (select admin DB)
+3. db.getUsers() -- (get the users details)	
+4. use products -- (select or create a new DB/existing DB)
+5. db.products.insertOne({name:'Laptop'}) -- (insert an item in the DB)
+6. db.products.find() -- (get all the item details)
+
+---------------------Volume mounting for mongo DB-----------------------------
+when we kill the container process whatever the operation we did perform in the database will be erased to persist the data we 
+do Volume mount were our DB data will be stored in the docker memory seperatly 
+$-> docker run -d --rm --name mongo-container `
+	-e MONGO_INITDB_ROOT_USERNAME='root' `
+	-e MONGO_INITDB_ROOT_PASSWORD='secret' `
+	-v mongoData:/data/db `    ( by enabling -v we storing the DB data in path /data/db)
+	mongo
+-----------------------To check the volume list--------------------------
+$-> docker volume ls  (volume are completely managed by docker)
+
+-----------------------Manually Delete the volume for Docker-------------------
+$-> docker volume remove <name-of-volume>
+ex=> docker volume remove mongoData 
+
+
+---------------------Volume mounting for mongo DB from local folder-----------------------------
+$-> docker run -d --rm --name mongo-container `
+	-e MONGO_INITDB_ROOT_USERNAME='root' `
+	-e MONGO_INITDB_ROOT_PASSWORD='secret' `
+	-v ${pwd}:/data/db `
+	mongo
+=> for linux and mac use - $(pwd)
+Note:- By Running this docker mongo will store some file in the PWD path in the local machine 
+
+
+

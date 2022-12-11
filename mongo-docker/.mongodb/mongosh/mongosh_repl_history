@@ -1,0 +1,12 @@
+db.products.find()
+use products
+show dbs 
+show dbs
+db.products.find()
+db.products.insertOne({name:'Laptop'})
+use products
+show dbs
+use test
+show dbs
+use products 
+show dbs 
