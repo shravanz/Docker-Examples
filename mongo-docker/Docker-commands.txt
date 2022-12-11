@@ -50,5 +50,13 @@ $-> docker run -d --rm --name mongo-container `
 => for linux and mac use - $(pwd)
 Note:- By Running this docker mongo will store some file in the PWD path in the local machine 
 
+-------------------------How to bind to the mongoDB port to Host machine Port------------------------
+$-> docker run -d --rm --name mongo-container `
+	-e MONGO_INITDB_ROOT_USERNAME='root' `
+	-e MONGO_INITDB_ROOT_PASSWORD='secret' `
+	-v ${pwd}:/data/db `
+	-p 27017:27017 `
+	mongo
+
 
 
